@@ -1,5 +1,6 @@
 node {
-    def app
+    def app;
+    def namespace = 'development';
 
     stage('Clone repository') {
         /* Let's make sure we have the repository cloned to our workspace */
@@ -14,7 +15,7 @@ node {
         /* This builds the actual image; synonymous to
          * docker build on the command line */
 
-        app = docker.build("kartikjalgaonkar/feedback-service")
+        app = docker.build("kartikjalgaonkar/final-feedback-service")
     }
 
     stage('Push image') {
@@ -24,28 +25,23 @@ node {
          * Pushing multiple tags is cheap, as all the layers are reused. */
         docker.withRegistry('https://registry.hub.docker.com', 'docker_credentials') {
             app.push("${env.BUILD_NUMBER}")
-            app.push("latest")
+          app.push("latest")
         }
     }
     
     stage('kubectl deploy'){
-        sh 'minikube start'
-        /*sh 'kubectl delete deployment feedback-service'
-        sh 'kubectl delete svc feedback-service'*/
-        sh 'kubectl run feedback-service --replicas=2 --labels="run=load-balancer-example" --image=kartikjalgaonkar/feedback-service  --port=8084'
-        sleep 60
-        sh 'kubectl get deployments feedback-service'
-        sh 'kubectl describe deployments feedback-service'
-        sh 'kubectl get replicasets'
-        sh 'kubectl describe replicasets'
-        sh 'kubectl expose deployment feedback-service --type=LoadBalancer --name=my-feedback-service'
-        sh 'kubectl get services my-feedback-service'
-        sleep 100
-        sh 'kubectl get services my-feedback-service'
-        sh 'kubectl describe services my-feedback-service'
-        sh 'kubectl get pods --output=wide'
-        sh 'minikube service my-feedback-service'
-        sh 'minikube dashboard'        
+             
+       
+        switch (namespace) {
+            case "development":
+                sh("kubectl get ns ${namespace} --kubeconfig=/home/yash/.kube/config || kubectl create namespace ${namespace} --kubeconfig=/home/yash/.kube/config")
+                sh("kubectl --namespace=${namespace} apply -f deployment.yml --kubeconfig=/home/yash/.kube/config")
+                sh("kubectl --namespace=${namespace} apply -f service.yml --kubeconfig=/home/yash/.kube/config")
+                sh ("kubectl --namespace=${namespace} apply -f ingress.yml --kubeconfig=/home/yash/.kube/config")
+                sh("echo http://`kubectl --namespace=${namespace} get service/${feSvcName} --output=json --kubeconfig=/home/yash/.kube/config | jq -r '.status.loadBalancer.ingress[0].ip'` > ${feSvcName} ")
+            
+                break
+        }
     }
    
 }
