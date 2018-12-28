@@ -8,7 +8,7 @@ spec:
   rules:
   - http:
       paths:
-      - path: /feedback-service
+      - path: /hi
         backend:
           serviceName: feedback-service
           servicePort: 8081
