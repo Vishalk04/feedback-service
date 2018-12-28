@@ -1,0 +1,11 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: feedback-service
+spec:
+  selector:
+    app: feedback-service
+  ports:
+  - protocol: TCP
+    port: 8081
+    targetPort: 8081
