@@ -20,7 +20,9 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import com.app.main.FeedbackServiceApplication;
+import org.junit.Ignore;
 
+@Ignore
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = FeedbackServiceApplication.class)
 @SpringBootTest
