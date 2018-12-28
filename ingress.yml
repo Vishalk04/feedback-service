@@ -11,4 +11,4 @@ spec:
       - path: /hi
         backend:
           serviceName: feedback-service
-          servicePort: 8081
+          servicePort: 8093
