@@ -18,4 +18,4 @@ spec:
       - name: feedback-service
         image: kartikjalgaonkar/final-feedback-service
         ports:
-        - containerPort: 8081
+        - containerPort: 8082
