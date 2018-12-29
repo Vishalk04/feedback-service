@@ -1,14 +1,14 @@
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-  name: feedback-service
+  name: example-ingress
   annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /
+    ingress.kubernetes.io/rewrite-target: /
 spec:
   rules:
   - http:
       paths:
-      - path: /hi
-        backend:
-          serviceName: feedback-service
-          servicePort: 8081
+        - path: /feedback
+          backend:
+            serviceName: feedback-service
+            servicePort: 8081
