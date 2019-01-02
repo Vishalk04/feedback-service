@@ -1,0 +1,9 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: feedback-service
+spec:
+  selector:
+    app: feedback-service
+  ports:
+    - port: 8082 # Default port for image
