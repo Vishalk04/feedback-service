@@ -80,10 +80,6 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
 		</plugins>
-<<<<<<< HEAD
 			<finalName>feedback-service</finalName>
-=======
-		<finalName>feedback-service</finalName>
->>>>>>> branch 'master' of https://github.com/Vishalk04/feedback-service.git
 	</build>
 </project>
