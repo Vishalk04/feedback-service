@@ -9,13 +9,13 @@ node {
     }
 
     stage('Build image') {
-       sh 'mvn clean install'
+   //    sh 'mvn clean install'
         
     
         /* This builds the actual image; synonymous to
          * docker build on the command line */
 
-        app = docker.build("kartikjalgaonkar/final-feedback-service")
+   //    app = docker.build("kartikjalgaonkar/final-feedback-service")
     }
 
     stage('Push image') {
@@ -23,17 +23,17 @@ node {
          * First, the incremental build number from Jenkins
          * Second, the 'latest' tag.
          * Pushing multiple tags is cheap, as all the layers are reused. */
-        docker.withRegistry('https://registry.hub.docker.com', 'docker_credentials') {
-            app.push("${env.BUILD_NUMBER}")
-          app.push("latest")
-        }
+   //     docker.withRegistry('https://registry.hub.docker.com', 'docker_credentials') {
+   //         app.push("${env.BUILD_NUMBER}")
+   //       app.push("latest")
+   //     }
     }
     
     stage('kubectl deploy'){
              
        
         switch (namespace) {
-            case "test":
+            case "demo":
                 sh("kubectl get ns ${namespace} --kubeconfig=/home/yash/.kube/config || kubectl create namespace ${namespace} --kubeconfig=/home/yash/.kube/config")
                 sh("kubectl --namespace=${namespace} apply -f deployment.yml --kubeconfig=/home/yash/.kube/config")
                 sh("kubectl --namespace=${namespace} apply -f service.yml --kubeconfig=/home/yash/.kube/config")
